@@ -1,0 +1,19 @@
+version: fastorch
+description: a fast pytorch project
+# filepath
+train_dirs:
+  - ../data/train_dir
+valid_dirs:
+  - ../data/valid_dir
+test_dirs:
+  - ../data/test_dir
+
+# train
+epochs: 100
+batch_size: 128
+num_workers: 0
+lr: 1e-4
+device_ids:
+  - 0
+valid_every_epochs: 1
+early_stop_epochs: -1
