@@ -16,7 +16,7 @@ class Trainer:
         self.scheduler = kwargs['scheduler']
         self.writer = self.args.writer
         self.logger = self.args.logger
-        self.criterion = MyLoss()
+        self.criterion = MyLoss().to(self.args.device)
 
     def train(self, train_loader, valid_loader):
         model_dir = os.path.join(self.writer.log_dir, 'model')
