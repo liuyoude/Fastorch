@@ -28,11 +28,11 @@ def main(args):
     valid_dataset = MyDataset(args.valid_dirs)
     test_dataset = MyDataset(args.test_dirs)
     train_dataloader = DataLoader(train_dataset, batch_size=args.batch_size,
-                                  shuffle=True, num_workers=args.num_works)
+                                  shuffle=True, num_workers=args.num_workers)
     valid_dataloader = DataLoader(valid_dataset, batch_size=args.batch_size,
                                   shuffle=False, num_workers=args.num_workers)
     test_dataloader = DataLoader(test_dataset, batch_size=args.batch_size,
-                                 shuffle=False, num_workers=args.num_works)
+                                 shuffle=False, num_workers=args.num_workers)
     # set model
     net = MyNet()
     if args.dp:
@@ -59,14 +59,15 @@ def run():
     for key, value in params.items():
         parser.add_argument(f'--{key}', default=value, type=type(value))
     args = parser.parse_args()
-    # # save config file
-    # utils.save_yaml_file(file_path='test.yaml', data=vars(args))
     # init logger and writer
     time_str = time.strftime('%Y-%m-%d-%H', time.localtime(time.time()))
     log_dir = f'runs/{time_str}-{args.version}'
-    args.writer = SummaryWriter(log_dir=log_dir)
-    args.logger = utils.get_logger(filename=os.path.join(log_dir, 'running.log'))
+    writer = SummaryWriter(log_dir=log_dir)
+    logger = utils.get_logger(filename=os.path.join(log_dir, 'running.log'))
     # run
+    # save config file
+    utils.save_yaml_file(file_path='test.yaml', data=vars(args))
+    args.writer, args.logger = writer, logger
     args.logger.info(args)
     main(args)
 
