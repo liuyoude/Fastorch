@@ -29,7 +29,7 @@ class Trainer:
         self.sum_valid_steps = 0
         best_metric = np.float32('inf')
         no_better_epoch = 0
-        for epoch in epochs:
+        for epoch in range(0, epochs+1):
             # train
             sum_loss = 0
             self.net.train()
@@ -87,7 +87,9 @@ class Trainer:
             self.writer.add_scalar('loss/valid_loss', loss.item(), global_step=self.sum_valid_steps)
             sum_loss += loss.item()
             self.sum_valid_steps += 1
-        metric['loss'] = sum_loss / num_steps
+        avg_loss = sum_loss / num_steps
+        metric['loss'] = avg_loss
+        self.logger.info(f'valid loss: {avg_loss:.3f}')
         return metric
 
     def test(self, test_loader):

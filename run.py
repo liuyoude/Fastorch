@@ -39,7 +39,7 @@ def main(args):
         net = nn.DataParallel(net, device_ids=args.device_ids)
     net = net.to(args.device)
     # optimizer & scheduler
-    optimizer = torch.optim.Adam(net.parameters(), lr=args.lr)
+    optimizer = torch.optim.Adam(net.parameters(), lr=float(args.lr))
     scheduler = None
     # trainer
     trainer = Trainer(args=args,
