@@ -18,3 +18,5 @@ device_ids:
   - 0
 valid_every_epochs: 1
 early_stop_epochs: -1
+start_save_model_epochs: 90
+save_model_interval_epochs: 1

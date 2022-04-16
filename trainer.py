@@ -29,7 +29,7 @@ class Trainer:
         self.sum_valid_steps = 0
         best_metric = np.float32('inf')
         no_better_epoch = 0
-        for epoch in range(0, epochs+1):
+        for epoch in range(0, epochs + 1):
             # train
             sum_loss = 0
             self.net.train()
@@ -51,6 +51,7 @@ class Trainer:
                 self.sum_train_steps += 1
             avg_loss = sum_loss / num_steps
             self.logger.info(f'Epoch-{epoch}\tloss:{avg_loss:.3f}')
+            self.writer.add_scalar('step-epoch', epoch, global_step=self.sum_train_steps)
             # valid
             if epoch % valid_every_epochs == 0:
                 metric = self.valid(valid_loader)
@@ -66,12 +67,13 @@ class Trainer:
                     # early stop
                     no_better_epoch += 1
                     if no_better_epoch > early_stop_epochs > 0: break
-        model_path = os.path.join(model_dir, f'{epoch}_checkpoint.pth.tar')
-        utils.save_model_state_dict(model_path, epoch=epoch,
-                                    net=self.net.module if self.args.dp else self.net,
-                                    optimizer=self.optimizer)
-
-
+            # save model
+            if epoch >= self.args.start_save_model_epochs:
+                if (epoch - self.args.start_save_model_epochs) % self.args.save_model_interval_epochs == 0:
+                    model_path = os.path.join(model_dir, f'{epoch}_checkpoint.pth.tar')
+                    utils.save_model_state_dict(model_path, epoch=epoch,
+                                                net=self.net.module if self.args.dp else self.net,
+                                                optimizer=self.optimizer)
 
     def valid(self, valid_loader):
         metric = {}
