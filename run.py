@@ -14,6 +14,8 @@ import utils
 
 
 def main(args):
+    # set random seed
+    utils.setup_seed(args.random_seed)
     # set device
     cuda = torch.cuda.is_available()
     device_ids = args.device_ids

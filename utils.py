@@ -6,6 +6,7 @@ import glob
 import yaml
 import csv
 import logging
+import torch
 
 
 def load_yaml(file_path='./config.yaml'):
@@ -55,6 +56,14 @@ def get_filename_list(dir_path, ext=None):
         files = sorted(glob.glob(file_path_pattern))
         filename_list += files
     return filename_list
+
+
+def setup_seed(seed):
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    np.random.seed(seed)
+    random.seed(seed)
+    torch.backends.cudnn.deterministic = True
 
 
 if __name__ == '__main__':
