@@ -1,5 +1,6 @@
 version: fastorch
 description: a fast pytorch project
+load_epoch: False # it will test your model if set a value, e.g. best, 10, 100
 # filepath
 train_dirs:
   - ../data/train_dir

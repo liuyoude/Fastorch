@@ -16,7 +16,7 @@ utils.py # define other functions
 # Usage
 
 ```bas
-# define your dataset, loss, net, trainer adn config file
+# define your dataset, loss, net, trainer and config file
 ssh run.sh
 ```
 

@@ -49,8 +49,14 @@ def main(args):
                       optimizer=optimizer,
                       scheduler=scheduler)
     # train model
-    trainer.train(train_dataloader, valid_dataloader)
+    if not args.load_epoch:
+        trainer.train(train_dataloader, valid_dataloader)
     # test model
+    model_path = os.path.join(self.writer.log_dir, 'model', f'{args.load_epoch}_checkpoint.pth.tar')
+    if args.dp:
+        trainer.net.module.load_state_dict(torch.load(model_path)['model'])
+    else:
+        trainer.net.load_state_dict(torch.load(model_path)['model'])
     trainer.test(test_dataloader)
 
 
@@ -63,12 +69,13 @@ def run():
     args = parser.parse_args()
     # init logger and writer
     time_str = time.strftime('%Y-%m-%d-%H', time.localtime(time.time()))
-    log_dir = f'runs/{time_str}-{args.version}'
+    args.version = f'{time_str}-{args.version}' if not args.load_epoch else args.version
+    log_dir = f'runs/{args.version}'
     writer = SummaryWriter(log_dir=log_dir)
     logger = utils.get_logger(filename=os.path.join(log_dir, 'running.log'))
     # run
     # save config file
-    utils.save_yaml_file(file_path='test.yaml', data=vars(args))
+    utils.save_yaml_file(file_path=os.path.join(log_dir, 'config.yaml'), data=vars(args))
     args.writer, args.logger = writer, logger
     args.logger.info(args)
     main(args)
