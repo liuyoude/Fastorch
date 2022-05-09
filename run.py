@@ -52,7 +52,8 @@ def main(args):
     if not args.load_epoch:
         trainer.train(train_dataloader, valid_dataloader)
     # test model
-    model_path = os.path.join(self.writer.log_dir, 'model', f'{args.load_epoch}_checkpoint.pth.tar')
+    load_epoch = args.load_epoch if args.load_epoch else 'best'
+    model_path = os.path.join(self.writer.log_dir, 'model', f'{load_epoch}_checkpoint.pth.tar')
     if args.dp:
         trainer.net.module.load_state_dict(torch.load(model_path)['model'])
     else:
