@@ -70,7 +70,7 @@ def run():
     args = parser.parse_args()
     # init logger and writer
     time_str = time.strftime('%Y-%m-%d-%H', time.localtime(time.time()))
-    args.version = f'{time_str}-{args.version}' if not args.load_epoch else args.version
+    args.version = f'{time_str}-{args.version}' if not args.load_epoch and args.time_version else args.version
     log_dir = f'runs/{args.version}'
     writer = SummaryWriter(log_dir=log_dir)
     logger = utils.get_logger(filename=os.path.join(log_dir, 'running.log'))
