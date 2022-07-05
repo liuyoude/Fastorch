@@ -2,11 +2,16 @@
 functional functions
 """
 import os
+import shutil
 import glob
 import yaml
 import csv
 import logging
+import random
+import numpy as np
 import torch
+
+sep = os.sep
 
 
 def load_yaml(file_path='./config.yaml'):
@@ -24,6 +29,28 @@ def save_csv(file_path, data: list):
     with open(file_path, 'w', newline='') as f:
         writer = csv.writer(f, lineterminator='\n')
         writer.writerows(data)
+
+
+# 复制目标文件到目标路径
+def copy_files(root_dir, target_dir, file_patterns, pass_dirs=['.git']):
+    # print(root_dir, root_dir.split(sep), [name for name in root_dir.split(sep) if name != ''])
+    os.makedirs(target_dir, exist_ok=True)
+    len_root = len([name for name in root_dir.split(sep) if name != ''])
+    for root, _, _ in os.walk(root_dir):
+        cur_dir = sep.join(root.split(sep)[len_root:])
+        first_dir_name = cur_dir.split(sep)[0]
+        if first_dir_name != '':
+            if (first_dir_name in pass_dirs) or (first_dir_name[0] in pass_dirs): continue
+        # print(len_root, root, cur_dir)
+        target_path = os.path.join(target_dir, cur_dir)
+        os.makedirs(target_path, exist_ok=True)
+        files = []
+        for file_pattern in file_patterns:
+            file_path_pattern = os.path.join(root, file_pattern)
+            files += sorted(glob.glob(file_path_pattern))
+        for file in files:
+            target_path_file = os.path.join(target_path, os.path.split(file)[-1])
+            shutil.copyfile(file, target_path_file)
 
 
 def save_model_state_dict(file_path, epoch=None, net=None, optimizer=None):
@@ -52,7 +79,7 @@ def get_filename_list(dir_path, pattern='*', ext='*'):
     :return: files path list
     """
     filename_list = []
-    for root, dirs, files in os.walk(dir_path):
+    for root, _, _ in os.walk(dir_path):
         file_path_pattern = os.path.join(root, f'{pattern}.{ext}')
         files = sorted(glob.glob(file_path_pattern))
         filename_list += files

@@ -12,6 +12,7 @@ from trainer import Trainer
 from dataset import MyDataset
 import utils
 
+sep = os.sep
 
 def main(args):
     # set random seed
@@ -53,7 +54,7 @@ def main(args):
         trainer.train(train_dataloader, valid_dataloader)
     # test model
     load_epoch = args.load_epoch if args.load_epoch else 'best'
-    model_path = os.path.join(self.writer.log_dir, 'model', f'{load_epoch}_checkpoint.pth.tar')
+    model_path = os.path.join(args.writer.log_dir, 'model', f'{load_epoch}_checkpoint.pth.tar')
     if args.dp:
         trainer.net.module.load_state_dict(torch.load(model_path)['model'])
     else:
@@ -75,11 +76,22 @@ def run():
     writer = SummaryWriter(log_dir=log_dir)
     logger = utils.get_logger(filename=os.path.join(log_dir, 'running.log'))
     # run
+    # transform version files
+    pass_dirs = ['.', '_', 'runs', 'results']
+    #    save latest version files
+    utils.copy_files(f'.{sep}', 'runs/latest_project', args.save_version_file_patterns, pass_dirs)
+    if args.load_epoch:
+        utils.copy_files(os.path.join(log_dir, 'project'), f'.{sep}', args.save_version_file_patterns, pass_dirs)
+    else:
+        utils.copy_files(f'.{sep}', os.path.join(log_dir, 'project'), args.save_version_file_patterns, pass_dirs)
     # save config file
     utils.save_yaml_file(file_path=os.path.join(log_dir, 'config.yaml'), data=vars(args))
     args.writer, args.logger = writer, logger
     args.logger.info(args)
     main(args)
+    # restore latest version files
+    if args.load_epoch:
+        utils.copy_files(f'.{sep}runs{sep}latest_project', f'.{sep}', args.save_version_file_patterns, pass_dirs)
 
 
 if __name__ == '__main__':

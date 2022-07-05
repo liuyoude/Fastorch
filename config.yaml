@@ -1,7 +1,10 @@
 version: fastorch
 description: a fast pytorch project
 time_version: True # if set ture, add time information in version
-load_epoch: False # it will test your model if set a value, e.g. best, 10, 100
+save_version_file_patterns:
+  - "*.py"
+  - "*.yaml"
+
 # filepath
 train_dirs:
   - ../data/train_dir
@@ -22,3 +25,6 @@ valid_every_epochs: 1
 early_stop_epochs: -1
 start_save_model_epochs: 90
 save_model_interval_epochs: 1
+
+# test
+load_epoch: False # it will test your model if set a value, e.g. best, 10, 100
