@@ -30,7 +30,10 @@ ssh run.sh
     + save latest files in `runs/latest_project`
     + load files from `runs/version/project` for testing
     + restore latest files from `runs/latest_project` 
-+ save tensorboard file, running long, config file, model state dict for each version
++ save tensorboard file, running log, config file, model state dict for each version
+  + use `tensorboard --logdir=runs` for visualization
+  + load model parameters from saved model files
+  + read runing log for training output
 + easily change train parameters
   + `random_seed`: set random seed for each training
   + `epochs`: set total training epochs
