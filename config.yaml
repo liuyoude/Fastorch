@@ -1,6 +1,7 @@
 version: fastorch
 description: a fast pytorch project
 time_version: True # if set ture, add time information in version
+save_version_files: False # if set true, save each version files in runs
 save_version_file_patterns:
   - "*.py"
   - "*.yaml"
