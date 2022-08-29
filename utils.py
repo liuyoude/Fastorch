@@ -75,7 +75,7 @@ def save_model_state_dict(file_path, epoch=None, net=None, optimizer=None):
 
 
 def get_logger(filename):
-    logging.basicConfig(filename=filename, level=logging.DEBUG)
+    logging.basicConfig(filename=filename, level=logging.INFO)
     logger = logging.getLogger(__name__)
     logger.addHandler(logging.StreamHandler())
     return logger
