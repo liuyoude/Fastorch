@@ -5,6 +5,11 @@ save_version_files: False # if set true, save each version files in runs
 save_version_file_patterns:
   - "*.py"
   - "*.yaml"
+pass_dirs:
+  - '.'
+  - '_'
+  - 'runs'
+  - 'results'
 
 # filepath
 train_dirs:
