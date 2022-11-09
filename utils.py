@@ -25,15 +25,12 @@ def save_yaml_file(file_path, data: dict):
         yaml.safe_dump(data, f, encoding='utf-8', allow_unicode=True)
 
 
-def save_load_version_files(path, load_epoch, file_patterns, pass_dirs=None):
+def save_load_version_files(path, file_patterns, pass_dirs=None):
     #    save latest version files
     if pass_dirs is None:
         pass_dirs = ['.', '_', 'runs', 'results']
     copy_files(f'.{sep}', 'runs/latest_project', file_patterns, pass_dirs)
-    if load_epoch:
-        copy_files(os.path.join(path, 'project'), f'.{sep}', file_patterns, pass_dirs)
-    else:
-        copy_files(f'.{sep}', os.path.join(path, 'project'), file_patterns, pass_dirs)
+    copy_files(f'.{sep}', os.path.join(path, 'project'), file_patterns, pass_dirs)
 
 
 def save_csv(file_path, data: list):

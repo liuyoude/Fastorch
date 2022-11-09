@@ -75,17 +75,14 @@ def run():
     log_dir = f'runs/{args.version}'
     writer = SummaryWriter(log_dir=log_dir)
     logger = utils.get_logger(filename=os.path.join(log_dir, 'running.log'))
-    # save / load version files
-    if args.save_version_files: utils.save_load_version_files(log_dir, args.load_epoch, args.save_version_file_patterns, args.pass_dirs)
+    # save version files
+    if args.save_version_files: utils.save_load_version_files(log_dir, args.save_version_file_patterns, args.pass_dirs)
     # save config file
     utils.save_yaml_file(file_path=os.path.join(log_dir, 'config.yaml'), data=vars(args))
     # run
     args.writer, args.logger = writer, logger
     args.logger.info(args)
     main(args)
-    # restore latest version files
-    if args.save_version_files and args.load_epoch:
-        utils.copy_files(f'.{sep}runs{sep}latest_project', f'.{sep}', args.save_version_file_patterns, args.pass_dirs)
 
 
 if __name__ == '__main__':
