@@ -20,7 +20,17 @@ utils.py # define other functions
 ssh run.sh
 ```
 
-# Characters
+# Change Log
+### 2022-11-09
++ add `load_in_memory` for dataset for speed training
++ remove some above functions (Doesn't work well in the actual version iteration):
+  + save version project file for each version
+    + type of saved files is defined by `save_version_file_patterns` in config file
+    + if `load_epoch` in config file is set false, save files in `runs/latest_project` and `runs/version/project`
+    + ~~if `load_epoch` in config file is set epoch name in saved model file~~
+      + ~~save latest files in `runs/latest_project`.~~
+      + ~~load files from `runs/version/project` for testing~~
+      + ~~restore latest files from `runs/latest_project`.~~ 
 
 ### 2022-07-05
 + save version project file for each version
@@ -29,7 +39,7 @@ ssh run.sh
   + if `load_epoch` in config file is set epoch name in saved model file
     + save latest files in `runs/latest_project`
     + load files from `runs/version/project` for testing
-    + restore latest files from `runs/latest_project` 
+    + restore latest files from `runs/latest_project`
 + save tensorboard file, running log, config file, model state dict for each version
   + use `tensorboard --logdir=runs` for visualization
   + load model parameters from saved model files
