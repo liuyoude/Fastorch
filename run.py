@@ -77,12 +77,12 @@ def run():
     logger = utils.get_logger(filename=os.path.join(log_dir, 'running.log'))
     # save version files
     if args.save_version_files: utils.save_load_version_files(log_dir, args.save_version_file_patterns, args.pass_dirs)
-    # save config file
-    utils.save_yaml_file(file_path=os.path.join(log_dir, 'config.yaml'), data=vars(args))
     # run
     args.writer, args.logger = writer, logger
-    args.logger.info(args)
+    args.logger.info(args.version)
     main(args)
+    # save config file
+    utils.save_yaml_file(file_path=os.path.join(log_dir, 'config.yaml'), data=vars(args))
 
 
 if __name__ == '__main__':
