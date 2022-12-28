@@ -18,7 +18,7 @@ def main(args):
     # set random seed
     utils.setup_seed(args.random_seed)
     # set device
-    cuda = torch.cuda.is_available()
+    cuda = args.cuda
     device_ids = args.device_ids
     args.dp = False
     if not cuda or device_ids is None:
@@ -27,9 +27,9 @@ def main(args):
         args.device = torch.device(f'cuda:{device_ids[0]}')
         if len(device_ids) > 1: args.dp = True
     # load data
-    train_dataset = MyDataset(args.train_dirs)
-    valid_dataset = MyDataset(args.valid_dirs)
-    test_dataset = MyDataset(args.test_dirs)
+    train_dataset = MyDataset(utils.get_filename_list(args.train_dirs), load_in_memory=False)
+    valid_dataset = MyDataset(utils.get_filename_list(args.valid_dirs), load_in_memory=False)
+    test_dataset = MyDataset(utils.get_filename_list(args.test_dirs), load_in_memory=False)
     train_dataloader = DataLoader(train_dataset, batch_size=args.batch_size,
                                   shuffle=True, num_workers=args.num_workers)
     valid_dataloader = DataLoader(valid_dataset, batch_size=args.batch_size,
@@ -67,7 +67,7 @@ def run():
     params = utils.load_yaml(file_path='./config.yaml')
     parser = argparse.ArgumentParser(description=params['description'])
     for key, value in params.items():
-        parser.add_argument(f'--{key}', default=value, type=type(value))
+        parser.add_argument(f'--{key}', default=value, type=utils.set_type)
     args = parser.parse_args()
     # init logger and writer
     time_str = time.strftime('%Y-%m-%d-%H', time.localtime(time.time()))

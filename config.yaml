@@ -19,6 +19,7 @@ valid_dirs:
 test_dirs:
   - ../data/test_dir
 
+cuda: True
 # train
 random_seed: 42
 epochs: 100

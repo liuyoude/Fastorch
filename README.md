@@ -21,6 +21,9 @@ ssh run.sh
 ```
 
 # Change Log
+### 2022-12-28
++ solve problem with bool command line arguments always being recognized as True
+
 ### 2022-11-09
 + add `load_in_memory` for dataset for speed training
 + remove some above functions (Doesn't work well in the actual version iteration):

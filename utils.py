@@ -94,6 +94,15 @@ def get_filename_list(dir_path, pattern='*', ext='*'):
     return filename_list
 
 
+def set_type(value):
+    if value.lower() == 'true':
+        return True
+    elif value.lower() == 'false':
+        return False
+    else:
+        return type(value)
+
+
 def setup_seed(seed):
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
