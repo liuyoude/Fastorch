@@ -100,7 +100,7 @@ def set_type(value):
     elif value.lower() == 'false':
         return False
     else:
-        return type(value)
+        return value
 
 
 def setup_seed(seed):
