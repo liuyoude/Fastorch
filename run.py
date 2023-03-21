@@ -27,9 +27,9 @@ def main(args):
         args.device = torch.device(f'cuda:{device_ids[0]}')
         if len(device_ids) > 1: args.dp = True
     # load data
-    train_dataset = MyDataset(utils.get_filename_list(args.train_dirs), load_in_memory=False)
-    valid_dataset = MyDataset(utils.get_filename_list(args.valid_dirs), load_in_memory=False)
-    test_dataset = MyDataset(utils.get_filename_list(args.test_dirs), load_in_memory=False)
+    train_dataset = MyDataset(args, utils.get_filename_list(args.train_dirs), load_in_memory=False)
+    valid_dataset = MyDataset(args, utils.get_filename_list(args.valid_dirs), load_in_memory=False)
+    test_dataset = MyDataset(args, utils.get_filename_list(args.test_dirs), load_in_memory=False)
     train_dataloader = DataLoader(train_dataset, batch_size=args.batch_size,
                                   shuffle=True, num_workers=args.num_workers)
     valid_dataloader = DataLoader(valid_dataset, batch_size=args.batch_size,

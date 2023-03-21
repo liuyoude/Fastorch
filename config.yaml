@@ -31,6 +31,7 @@ device_ids:
 valid_every_epochs: 1
 early_stop_epochs: -1
 start_save_model_epochs: 90
+start_scheduler_epoch: 0
 save_model_interval_epochs: 1
 
 # test

@@ -43,12 +43,16 @@ class Trainer:
                 self.optimizer.zero_grad()
                 loss.backward()
                 self.optimizer.step()
-                if self.scheduler is not None:
-                    self.scheduler.step()
+                # scheduler by step
+                # if self.scheduler is not None:
+                #     self.scheduler.step()
                 # visualization
                 self.writer.add_scalar('loss/train_loss', loss.item(), global_step=self.sum_train_steps)
                 sum_loss += loss.item()
                 self.sum_train_steps += 1
+            # scheduler by epoch
+            if self.scheduler is not None and epoch >= self.args.start_scheduler_epoch:
+                self.scheduler.step()
             avg_loss = sum_loss / num_steps
             self.logger.info(f'Epoch-{epoch}\tloss:{avg_loss:.3f}')
             self.writer.add_scalar('step-epoch', epoch, global_step=self.sum_train_steps)
